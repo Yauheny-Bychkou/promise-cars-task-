@@ -5,34 +5,34 @@ document.addEventListener("DOMContentLoaded", () => {
     output = document.getElementById("output");
   const getData = (url) => {
     return new Promise((resolve, reject) => {
-      select.addEventListener("change", () => {
-        const request = new XMLHttpRequest();
-        request.open("GET", url);
-        request.setRequestHeader("Content-type", "application/json");
-        request.addEventListener("readystatechange", () => {
-          if (request.readyState !== 4) {
-            return;
-          }
-          if (request.readyState === 4 && request.status === 200) {
-            const data = JSON.parse(request.responseText);
+      const request = new XMLHttpRequest();
+      request.open("GET", url);
+      request.setRequestHeader("Content-type", "application/json");
+      request.addEventListener("readystatechange", () => {
+        if (request.readyState !== 4) {
+          return;
+        }
+        if (request.readyState === 4 && request.status === 200) {
+          const data = JSON.parse(request.responseText);
 
-            resolve(data);
-          } else {
-            reject(request.statusText);
-          }
-        });
-        request.send();
+          resolve(data);
+        } else {
+          reject(request.statusText);
+        }
       });
+      request.send();
     });
   };
 
   const outputCars = (data) => {
-    data.cars.forEach((item) => {
-      if (item.brand === select.value) {
-        const { brand, model, price } = item;
-        output.innerHTML = `Тачка ${brand} ${model} <br>
+    select.addEventListener("change", () => {
+      data.cars.forEach((item) => {
+        if (item.brand === select.value) {
+          const { brand, model, price } = item;
+          output.innerHTML = `Тачка ${brand} ${model} <br>
          Цена: ${price}$`;
-      }
+        }
+      });
     });
   };
 
